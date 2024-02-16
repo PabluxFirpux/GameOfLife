@@ -20,7 +20,9 @@ public:
     Cell getCell(int x, int y);
     int getWidth();
     int getHeight();
+    void pause();
 private:
+    bool paused;
     int width;
     int height;
     std::vector<std::vector<Cell>> cells;

@@ -78,10 +78,9 @@ void drawCell(float x, float y) {
 }
 
 void drawBoard() {
-    int max = (WIDTH / CELL_SIZE) > (HEIGHT / CELL_SIZE) ? (WIDTH / CELL_SIZE) : (HEIGHT / CELL_SIZE);
-    for (int i = 0; i < WIDTH / CELL_SIZE; i++) {
-        for (int j = 0; j < HEIGHT / CELL_SIZE; j++) {
-            if (board.isAlive(i + XOFFSET, j+ YOFFSET)) {
+    for (int i = 0; i < WIDTH/CELL_SIZE; i++) {
+        for (int j = 0; j < HEIGHT/CELL_SIZE; j++) {
+            if (board.isAlive(i + XOFFSET , j + YOFFSET)) {
                 drawCell(i * CELL_SIZE, j * CELL_SIZE);
             }
         }
@@ -91,18 +90,23 @@ void drawBoard() {
 void pressKey(unsigned char key, int x, int y) {
     switch(key) {
         case 'w':
+            if (YOFFSET < BOARD_SIZE - (HEIGHT / CELL_SIZE))
             YOFFSET++;
             break;
         case 's':
+            if (YOFFSET > 0)
             YOFFSET--;
             break;
         case 'a':
+            if (XOFFSET > 0)
             XOFFSET--;
             break;
         case 'd':
+            if (XOFFSET < BOARD_SIZE - (WIDTH / CELL_SIZE))
             XOFFSET++;
             break;
         case 'q':
+            if (BOARD_SIZE > WIDTH / CELL_SIZE)
             CELL_SIZE--;
             break;
         case 'e':
@@ -113,6 +117,17 @@ void pressKey(unsigned char key, int x, int y) {
             break;
         case ' ':
             board.update();
+            break;
+        case 'x':
+            exit(0);
+            break;
+        case 'p':
+            board.pause();
+            break;
+        case 'n':
+            board.pause();
+            board.update();
+            board.pause();
             break;
     }
 }

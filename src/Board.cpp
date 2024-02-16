@@ -10,6 +10,7 @@
 Board::Board(int width, int height) {
     this->width = width;
     this->height = height;
+    this->paused = false;
     for (int i = 0; i < width; i++) {
         std::vector<Cell> row;
         for (int j = 0; j < height; j++) {
@@ -24,6 +25,9 @@ Board::~Board() {
 }
 
 void Board::update() {
+    if (this->paused) {
+        return;
+    }
     for (int i = 0; i < this->width; i++) {
         for (int j = 0; j < this->height; j++) {
             this->updateCell(i, j);
@@ -81,4 +85,8 @@ bool Board::isAlive(int x, int y) {
         return false;
     }
     return this->cells[x][y].isAlive();
+}
+
+void Board::pause() {
+    this->paused = !this->paused;
 }
