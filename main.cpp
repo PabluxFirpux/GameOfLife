@@ -78,9 +78,10 @@ void drawCell(float x, float y) {
 }
 
 void drawBoard() {
+    int max = (WIDTH / CELL_SIZE) > (HEIGHT / CELL_SIZE) ? (WIDTH / CELL_SIZE) : (HEIGHT / CELL_SIZE);
     for (int i = 0; i < WIDTH / CELL_SIZE; i++) {
         for (int j = 0; j < HEIGHT / CELL_SIZE; j++) {
-            if (board.getCell(i + XOFFSET, j+ YOFFSET).isAlive()) {
+            if (board.isAlive(i + XOFFSET, j+ YOFFSET)) {
                 drawCell(i * CELL_SIZE, j * CELL_SIZE);
             }
         }

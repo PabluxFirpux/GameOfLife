@@ -75,3 +75,10 @@ std::vector<std::vector<Cell>> Board::getView() {
 Cell Board::getCell(int x, int y) {
     return this->cells[x][y];
 }
+
+bool Board::isAlive(int x, int y) {
+    if (x < 0 || x >= this->width || y < 0 || y >= this->height) {
+        return false;
+    }
+    return this->cells[x][y].isAlive();
+}

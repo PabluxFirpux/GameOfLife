@@ -14,6 +14,7 @@ public:
     ~Board();
     void update();
     std::vector<std::vector<Cell>> getView();
+    bool isAlive(int x, int y);
     void setCell(int x, int y, bool alive);
     void setCell(int x, int y, Cell cell);
     Cell getCell(int x, int y);
@@ -25,7 +26,6 @@ private:
     std::vector<std::vector<Cell>> cells;
     void updateCell(int x, int y);
     int countAliveNeighbours(int x, int y);
-
 };
 
 
