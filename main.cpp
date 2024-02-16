@@ -4,14 +4,18 @@
 #include <iostream>
 #include "Board.h"
 
-const int WIDTH = 1800;
-const int HEIGHT = 900;
-const int CELL_SIZE = 10;
-Board board(WIDTH / CELL_SIZE, HEIGHT / CELL_SIZE);
+int WIDTH = 1800;
+int HEIGHT = 900;
+const int BOARD_SIZE = 600;
+int CELL_SIZE = 10;
+int XOFFSET = 0;
+int YOFFSET = 0;
+Board board(BOARD_SIZE, BOARD_SIZE);
 
 void display();
 void reshape(int w, int h);
 void drawCell(float x, float y);
+void pressKey(unsigned char key, int x, int y);
 void drawBoard();
 
 void init() {
@@ -31,6 +35,7 @@ int main(int argc, char** argv) {
     glutDisplayFunc(display);
     glutIdleFunc(display);
     glutReshapeFunc(reshape);
+    glutKeyboardFunc(pressKey);
     init();
     glutMainLoop();
 
@@ -43,6 +48,9 @@ void reshape(int w, int h) {
     glLoadIdentity();
     gluOrtho2D(0, w, 0, h);
     glMatrixMode(GL_MODELVIEW);
+    WIDTH = w;
+    HEIGHT = h;
+    CELL_SIZE--;
 }
 
 
@@ -57,6 +65,7 @@ void display() {
     glEnd();
 
     glFlush();
+
 }
 
 void drawCell(float x, float y) {
@@ -71,9 +80,38 @@ void drawCell(float x, float y) {
 void drawBoard() {
     for (int i = 0; i < WIDTH / CELL_SIZE; i++) {
         for (int j = 0; j < HEIGHT / CELL_SIZE; j++) {
-            if (board.getCell(i, j).isAlive()) {
+            if (board.getCell(i + XOFFSET, j+ YOFFSET).isAlive()) {
                 drawCell(i * CELL_SIZE, j * CELL_SIZE);
             }
         }
+    }
+}
+
+void pressKey(unsigned char key, int x, int y) {
+    switch(key) {
+        case 'w':
+            YOFFSET++;
+            break;
+        case 's':
+            YOFFSET--;
+            break;
+        case 'a':
+            XOFFSET--;
+            break;
+        case 'd':
+            XOFFSET++;
+            break;
+        case 'q':
+            CELL_SIZE--;
+            break;
+        case 'e':
+            CELL_SIZE++;
+            break;
+        case 'r':
+            board = Board(BOARD_SIZE, BOARD_SIZE);
+            break;
+        case ' ':
+            board.update();
+            break;
     }
 }
