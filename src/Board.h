@@ -5,8 +5,26 @@
 #ifndef GAMEOFLIFE_BOARD_H
 #define GAMEOFLIFE_BOARD_H
 
+#include "Cell.h"
+#include <vector>
 
 class Board {
+public:
+    Board(int width, int height);
+    ~Board();
+    void update();
+    std::vector<std::vector<Cell>> getView();
+    void setCell(int x, int y, bool alive);
+    void setCell(int x, int y, Cell cell);
+    Cell getCell(int x, int y);
+    int getWidth();
+    int getHeight();
+private:
+    int width;
+    int height;
+    std::vector<std::vector<Cell>> cells;
+    void updateCell(int x, int y);
+    int countAliveNeighbours(int x, int y);
 
 };
 
