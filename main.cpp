@@ -1,6 +1,7 @@
 #include <GL/gl.h>
 #include <GL/glu.h>
 #include <GL/glut.h>
+#include <iostream>
 #include "Board.h"
 #include "MapParser.h"
 
@@ -10,8 +11,8 @@ const int BOARD_SIZE = 600;
 int CELL_SIZE = 10;
 int XOFFSET = 0;
 int YOFFSET = 0;
-MapParser parser = MapParser("D:\\AAUni\\Personal\\C++\\GameOfLife\\map.txt");
-Board board = parser.parse();
+MapParser parser = MapParser("");
+Board board = Board(BOARD_SIZE, BOARD_SIZE, true);
 
 void display();
 void reshape(int w, int h);
@@ -24,7 +25,14 @@ void init() {
 }
 
 int main(int argc, char** argv) {
-    board.pause();
+    if (argc > 1) {
+        parser = MapParser(argv[1]);
+        board = parser.parse();
+        board.pause();
+    } else {
+        board = Board(BOARD_SIZE, BOARD_SIZE, true);
+        board.pause();
+    }
 
     glutInit(&argc, argv);
     glutInitDisplayMode(GLUT_RGB);

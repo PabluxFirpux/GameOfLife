@@ -62,3 +62,7 @@ std::vector<std::string> MapParser::split(std::string s, char delimiter) {
     tokens.push_back(s);
     return tokens;
 }
+
+void MapParser::setPath(std::string path) {
+    this->path = path;
+}
