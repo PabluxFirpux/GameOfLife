@@ -6,6 +6,7 @@
 #include "Cell.h"
 #include <vector>
 #include <cstdlib>
+#include <iostream>
 
 Board::Board(int width, int height) {
     this->width = width;
@@ -15,7 +16,7 @@ Board::Board(int width, int height) {
         std::vector<Cell> row;
         for (int j = 0; j < height; j++) {
             int random = rand() % 10 +1;
-            row.push_back(Cell(i, j, random > 5));
+            row.push_back(Cell(i, j, random > 60));
         }
         this->cells.push_back(row);
     }
@@ -42,13 +43,25 @@ void Board::update() {
 
 void Board::updateCell(int x, int y) {
     int aliveNeighbours = this->countAliveNeighbours(x, y);
+    //std::cout << "Alive neighbours: " << aliveNeighbours << std::endl;
+    if(!this->cells[x][y].isAlive() && aliveNeighbours == 0) {
+        this->cells[x][y].setNextState(false);
+        return;
+    }
     if (this->cells[x][y].isAlive()) {
         if (aliveNeighbours < 2 || aliveNeighbours > 3) {
             this->cells[x][y].setNextState(false);
+            return;
         }
+        this->cells[x][y].setNextState(true);
+        return;
     } else {
         if (aliveNeighbours == 3) {
             this->cells[x][y].setNextState(true);
+            return;
+        } else {
+            this->cells[x][y].setNextState(false);
+            return;
         }
     }
 }
@@ -78,6 +91,13 @@ std::vector<std::vector<Cell>> Board::getView() {
 
 Cell Board::getCell(int x, int y) {
     return this->cells[x][y];
+}
+
+void Board::setCell(int x, int y, bool alive) {
+    if (x < 0 || x >= this->width || y < 0 || y >= this->height) {
+        return;
+    }
+    this->cells[x][y].setAlive(alive);
 }
 
 bool Board::isAlive(int x, int y) {

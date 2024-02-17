@@ -3,6 +3,7 @@
 #include <GL/glut.h>
 #include <iostream>
 #include "Board.h"
+#include "MapParser.h"
 
 int WIDTH = 1800;
 int HEIGHT = 900;
@@ -10,7 +11,8 @@ const int BOARD_SIZE = 600;
 int CELL_SIZE = 10;
 int XOFFSET = 0;
 int YOFFSET = 0;
-Board board(BOARD_SIZE, BOARD_SIZE);
+MapParser parser = MapParser("./../map.txt");
+Board board = parser.parse();
 
 void display();
 void reshape(int w, int h);
@@ -23,6 +25,7 @@ void init() {
 }
 
 int main(int argc, char** argv) {
+    board.pause();
     std::cout << "Initializing life" << std::endl;
 
     glutInit(&argc, argv);
@@ -50,7 +53,6 @@ void reshape(int w, int h) {
     glMatrixMode(GL_MODELVIEW);
     WIDTH = w;
     HEIGHT = h;
-    CELL_SIZE--;
 }
 
 
@@ -113,7 +115,8 @@ void pressKey(unsigned char key, int x, int y) {
             CELL_SIZE++;
             break;
         case 'r':
-            board = Board(BOARD_SIZE, BOARD_SIZE);
+            board = parser.parse();
+            board.pause();
             break;
         case ' ':
             board.update();

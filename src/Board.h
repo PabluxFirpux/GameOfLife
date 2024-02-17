@@ -7,7 +7,7 @@
 
 #include "Cell.h"
 #include <vector>
-
+#include <string>
 class Board {
 public:
     Board(int width, int height);
