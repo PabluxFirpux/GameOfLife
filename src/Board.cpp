@@ -44,24 +44,21 @@ void Board::update() {
 void Board::updateCell(int x, int y) {
     int aliveNeighbours = this->countAliveNeighbours(x, y);
     //std::cout << "Alive neighbours: " << aliveNeighbours << std::endl;
-    if(!this->cells[x][y].isAlive() && aliveNeighbours == 0) {
+    /*if(!this->cells[x][y].isAlive() && aliveNeighbours == 0) {
         this->cells[x][y].setNextState(false);
         return;
-    }
+    }*/
     if (this->cells[x][y].isAlive()) {
         if (aliveNeighbours < 2 || aliveNeighbours > 3) {
             this->cells[x][y].setNextState(false);
-            return;
+        } else {
+            this->cells[x][y].setNextState(true);
         }
-        this->cells[x][y].setNextState(true);
-        return;
     } else {
         if (aliveNeighbours == 3) {
             this->cells[x][y].setNextState(true);
-            return;
         } else {
             this->cells[x][y].setNextState(false);
-            return;
         }
     }
 }
