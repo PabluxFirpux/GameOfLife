@@ -10,7 +10,7 @@
 #include <string>
 class Board {
 public:
-    Board(int width, int height);
+    Board(int width, int height, bool randomBoard = false);
     ~Board();
     void update();
     std::vector<std::vector<Cell>> getView();

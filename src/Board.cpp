@@ -8,7 +8,7 @@
 #include <cstdlib>
 #include <iostream>
 
-Board::Board(int width, int height) {
+Board::Board(int width, int height, bool randomBoard) {
     this->width = width;
     this->height = height;
     this->paused = false;
@@ -16,7 +16,7 @@ Board::Board(int width, int height) {
         std::vector<Cell> row;
         for (int j = 0; j < height; j++) {
             int random = rand() % 10 +1;
-            row.push_back(Cell(i, j, random > 60));
+            row.push_back(Cell(i, j, randomBoard ? random > 5 : false));
         }
         this->cells.push_back(row);
     }

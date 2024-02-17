@@ -26,7 +26,7 @@ void init() {
 
 int main(int argc, char** argv) {
     board.pause();
-    std::cout << "Initializing life" << std::endl;
+    std::cout << "Initializing, life" << std::endl;
 
     glutInit(&argc, argv);
     glutInitDisplayMode(GLUT_RGB);
@@ -116,6 +116,10 @@ void pressKey(unsigned char key, int x, int y) {
             break;
         case 'r':
             board = parser.parse();
+            board.pause();
+            break;
+        case 't':
+            board = Board(BOARD_SIZE, BOARD_SIZE, true);
             board.pause();
             break;
         case ' ':

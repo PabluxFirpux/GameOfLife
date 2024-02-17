@@ -44,7 +44,6 @@ Board MapParser::parse() {
     for (int i = 0; i < cells.size(); i += 2) {
         int x = std::stoi(cells[i]);
         int y = std::stoi(cells[i + 1]);
-        std::cout << x << " " << y << std::endl;
         board.setCell(x, y, true);
     }
     return board;
