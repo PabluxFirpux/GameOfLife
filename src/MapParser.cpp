@@ -9,6 +9,7 @@
 #include <vector>
 #include <string>
 #include "Board.h"
+#include <cstdlib>
 MapParser::MapParser(std::string path) {
     this->path = path;
 }

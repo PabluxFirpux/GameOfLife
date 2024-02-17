@@ -1,7 +1,6 @@
 #include <GL/gl.h>
 #include <GL/glu.h>
 #include <GL/glut.h>
-#include <iostream>
 #include "Board.h"
 #include "MapParser.h"
 
@@ -11,7 +10,7 @@ const int BOARD_SIZE = 600;
 int CELL_SIZE = 10;
 int XOFFSET = 0;
 int YOFFSET = 0;
-MapParser parser = MapParser("./../map.txt");
+MapParser parser = MapParser("D:\\AAUni\\Personal\\C++\\GameOfLife\\map.txt");
 Board board = parser.parse();
 
 void display();
@@ -26,7 +25,6 @@ void init() {
 
 int main(int argc, char** argv) {
     board.pause();
-    std::cout << "Initializing, life" << std::endl;
 
     glutInit(&argc, argv);
     glutInitDisplayMode(GLUT_RGB);
