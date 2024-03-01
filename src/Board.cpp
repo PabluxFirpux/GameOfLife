@@ -16,13 +16,16 @@ Board::Board(int width, int height, bool randomBoard) {
         std::vector<Cell> row;
         for (int j = 0; j < height; j++) {
             int random = rand() % 10 +1;
-            Cell cell = Cell(i, j, randomBoard ? random > 5 : false);
-            if (cell.isAlive()) {
-                this->aliveCells.push_back(&cell);
-            }
+            Cell cell = Cell(i, j, randomBoard && random > 5);
             row.push_back(cell);
         }
         this->cells.push_back(row);
+        for (auto cell : cells[i]) {
+            if (cell.isAlive()) {
+                Cell* cellPointer = &cell;
+                this->aliveCells.push_back(cellPointer);
+            }
+        }
     }
 }
 
@@ -34,15 +37,19 @@ void Board::update() {
         return;
     }
 
-    std::vector<Cell*> cellsAlive = this->aliveCells;
+    std::vector<Cell*> cellsAlive;
+    cellsAlive.reserve(this->aliveCells.size());
+    for (auto aliveCell : this->aliveCells) {
+        cellsAlive.push_back(aliveCell);
+    }
     this->aliveCells.clear();
-    for (int i = 0; i < cellsAlive.size(); i++) {
-        Cell* cell = cellsAlive[i];
+
+    for (auto cell : cellsAlive) {
+        Cell cellCopy = *cell;
         this->updateCellAndNeighbours(cell->getX(), cell->getY());
     }
 
-    for (int i = 0; i < this->cellsToUpdate.size(); i++) {
-        Cell* cell = this->cellsToUpdate[i];
+    for (auto cell : this->cellsToUpdate) {
         this->changeState(cell->getX(), cell->getY());
     }
     this->cellsToUpdate.clear();
@@ -51,8 +58,8 @@ void Board::update() {
 
 void Board::updateCell(int x, int y) {
     int aliveNeighbours = this->countAliveNeighbours(x, y);
-
-    if (this->cells[x][y].isAlive()) {
+    bool alive = this->cells[x][y].isAlive();
+    if (alive) {
         if (aliveNeighbours < 2 || aliveNeighbours > 3) {
             this->cells[x][y].setNextState(false);
         } else {
@@ -63,8 +70,10 @@ void Board::updateCell(int x, int y) {
         if (aliveNeighbours == 3) {
             this->cells[x][y].setNextState(true);
             this->aliveCells.push_back(&this->cells[x][y]);
+
         } else {
             this->cells[x][y].setNextState(false);
+
         }
     }
 }
@@ -100,9 +109,10 @@ void Board::setCell(int x, int y, bool alive) {
     if (x < 0 || x >= this->width || y < 0 || y >= this->height) {
         return;
     }
-    this->cells[x][y].setAlive(alive);
     if (alive) {
-        this->aliveCells.push_back(&this->cells[x][y]);
+        Cell* cellPointer = &this->cells[x][y];
+        cellPointer->setAlive(true);
+        this->aliveCells.push_back(cellPointer);
     }
 }
 
@@ -117,19 +127,19 @@ void Board::pause() {
     this->paused = !this->paused;
 }
 
-void Board::updateCells() {
-
-}
 
 void Board::updateCellAndNeighbours(int x, int y) {
     for (int i = -1; i < 2; i++) {
         for (int j = -1; j < 2; j++) {
             int neighbourX = x + i;
             int neighbourY = y + j;
+
             if (neighbourX >= 0 && neighbourX < this->width && neighbourY >= 0 && neighbourY < this->height) {
+
                 if(!this->cells[neighbourX][neighbourY].isChecked()) {
-                    this->cellsToUpdate.push_back(&this->cells[neighbourX][neighbourY]);
                     this->updateCell(neighbourX, neighbourY);
+                    this->cellsToUpdate.push_back(&this->cells[neighbourX][neighbourY]);
+
                 }
             }
         }

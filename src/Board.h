@@ -31,7 +31,6 @@ private:
     std::vector<Cell*> cellsToUpdate;
     void updateCell(int x, int y);
     int countAliveNeighbours(int x, int y);
-    void updateCells();
     void updateCellAndNeighbours(int x, int y);
     void changeState(int x,int y);
 };
