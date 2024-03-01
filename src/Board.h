@@ -14,11 +14,11 @@ public:
     Board(int width, int height, bool randomBoard = false);
     ~Board();
     void update();
-    std::vector<std::vector<Cell>> getView();
+    std::vector<std::vector<Cell *>> getView();
     bool isAlive(int x, int y);
     void setCell(int x, int y, bool alive);
     void setCell(int x, int y, Cell cell);
-    Cell getCell(int x, int y);
+    Cell * getCell(int x, int y);
     int getWidth();
     int getHeight();
     void pause();
@@ -26,7 +26,7 @@ private:
     bool paused;
     int width;
     int height;
-    std::vector<std::vector<Cell>> cells;
+    std::vector<std::vector<Cell*>> cells;
     std::vector<Cell*> aliveCells;//TODO: remove this
     std::vector<Cell*> cellsToUpdate;
     void updateCell(int x, int y);
