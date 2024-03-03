@@ -21,5 +21,5 @@ install(TARGETS GameOfLife DESTINATION bin)
 
 
 target_link_libraries(GameOfLife ${OPENGL_LIBRARIES} ${GLUT_LIBRARY})
-target_link_libraries(GameOfLife -lopengl32 -lfreeglut)
+target_link_libraries(GameOfLife glut)
 
