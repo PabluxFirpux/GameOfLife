@@ -11,20 +11,29 @@ const int BOARD_SIZE = 600;
 int CELL_SIZE = 10;
 int XOFFSET = 0;
 int YOFFSET = 0;
+bool grid = false;
 MapParser parser = MapParser("");
 Board board = Board(BOARD_SIZE, BOARD_SIZE, true);
 
 void display();
+
 void reshape(int w, int h);
+
 void drawCell(float x, float y);
+
+void drawCellWithoutBorder(float x, float y);
+
+void drawCellWithBorder(float x, float y);
+
 void pressKey(unsigned char key, int x, int y);
+
 void drawBoard();
 
 void init() {
-    glClearColor(0, 0, 0,255);
+    glClearColor(0, 0, 0, 255);
 }
 
-int main(int argc, char** argv) {
+int main(int argc, char **argv) {
     if (argc > 1) {
         parser = MapParser(argv[1]);
         board = parser.parse();
@@ -77,45 +86,65 @@ void display() {
 }
 
 void drawCell(float x, float y) {
+    drawCellWithoutBorder(x, y);
+}
+
+void drawCellWithoutBorder(float x, float y) {
+    glColor3f(1, 1, 1);
+    glVertex2f(x, y);
+    glVertex2f(x + CELL_SIZE, y);
+    glVertex2f(x + CELL_SIZE, y + CELL_SIZE);
+    glVertex2f(x, y + CELL_SIZE);
+}
+
+void drawCellWithBorder(float x, float y) {
     glColor3f(1, 1, 1);
     glVertex2f(x, y);
     glVertex2f(x + CELL_SIZE, y);
     glVertex2f(x + CELL_SIZE, y + CELL_SIZE);
     glVertex2f(x, y + CELL_SIZE);
 
+    glColor3f(0, 0, 0);
+    float borderThickness = CELL_SIZE / 10;
+    float newCellSize = CELL_SIZE - 2 * borderThickness;
+    float newX = x + borderThickness;
+    float newY = y + borderThickness;
+    glVertex2f(newX, newY);
+    glVertex2f(newX + newCellSize, newY);
+    glVertex2f(newX + newCellSize, newY + newCellSize);
+    glVertex2f(newX, newY + newCellSize);
 }
 
 void drawBoard() {
-    for (int i = 0; i < WIDTH/CELL_SIZE; i++) {
-        for (int j = 0; j < HEIGHT/CELL_SIZE; j++) {
-            if (board.isAlive(i + XOFFSET , j + YOFFSET)) {
-                drawCell(i * CELL_SIZE, j * CELL_SIZE);
-            }
+    for (int i = 0; i < WIDTH / CELL_SIZE; i++) {
+        for (int j = 0; j < HEIGHT / CELL_SIZE; j++) {
+            if (board.isAlive(i + XOFFSET, j + YOFFSET)) drawCell(i * CELL_SIZE, j * CELL_SIZE);
+            else if (grid) drawCellWithBorder(i * CELL_SIZE, j * CELL_SIZE);
         }
     }
 }
 
 void pressKey(unsigned char key, int x, int y) {
-    switch(key) {
+    switch (key) {
         case 'w':
             if (YOFFSET < BOARD_SIZE - (HEIGHT / CELL_SIZE))
-            YOFFSET++;
+                YOFFSET++;
             break;
         case 's':
             if (YOFFSET > 0)
-            YOFFSET--;
+                YOFFSET--;
             break;
         case 'a':
             if (XOFFSET > 0)
-            XOFFSET--;
+                XOFFSET--;
             break;
         case 'd':
             if (XOFFSET < BOARD_SIZE - (WIDTH / CELL_SIZE))
-            XOFFSET++;
+                XOFFSET++;
             break;
         case 'q':
             if (BOARD_SIZE > WIDTH / CELL_SIZE)
-            CELL_SIZE--;
+                CELL_SIZE--;
             break;
         case 'e':
             CELL_SIZE++;
@@ -123,6 +152,9 @@ void pressKey(unsigned char key, int x, int y) {
         case 'r':
             board = parser.parse();
             board.pause();
+            break;
+        case 'g':
+            grid = !grid;
             break;
         case 't':
             board = Board(BOARD_SIZE, BOARD_SIZE, true);

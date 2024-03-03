@@ -3,6 +3,8 @@
 //
 
 #include "Cell.h"
+#include <iostream>
+
 Cell::Cell(int x, int y, bool alive) {
     this->alive = alive;
     this->x = x;
